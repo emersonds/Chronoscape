@@ -1,0 +1,17 @@
+- Auto attacks based on a timer
+- Killing enemies gives xp & gold
+- Gaining enough xp unlocks a level
+	- Gaining a level lets you increase attack speed/ damage, increase max health, increase move speed, etc
+- Limited amount of buyable chests per stage
+	- Items grant additional passives & new forms of attacks
+	- When you get an item, you can level it up (ex. make it swing faster), whereas getting a dupe will cause it to do more damage/ increase crit chance?? (point is, leveling up & getting a stack will change different stats)
+- Teleporter that can be activated whenever- spawns a boss
+	- Defeating boss allows player to go to next stage- there will be 5 stages (this includes the final stage); can loop back to stage 1 instead of going to final stage
+	- Teleporting removes all gold & converts it to xp
+	- Small chance to be teleported to a merchant (will keep all gold if this happens)
+- Can stay in a stage for as long as they like
+	- Wave sizes & enemies spawned will be determined on total run time; xp gained will be determined by how long player has been on that stage (so staying in a stage longer = more & harder enemies, but less xp gain)
+- Unlockable classes w/ unique attacks & passives (both starting & unlockable via level ups)
+- Use-abilities:
+	- Ex. starting class has a dodge roll (could be upgradable/ improved w/ items to take you further, have a lower recharge, more i-frames, etc)
+	- Ultimate ability? (ex. One of the classes could have a self-rewind like Tracer- have to get charges from leveling up)
