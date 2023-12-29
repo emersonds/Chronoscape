@@ -13,6 +13,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Tooltip("Whether player velocity changes should be instant or have some acceleration/ deceleration")]
     private bool snappyMovement = false;
 
+    [SerializeField]
+    private float accelSpeed = 1;
+
+    [SerializeField]
+    private float decelSpeed = 1;
+
+    [SerializeField]
+    private float turnAroundSpeed = 1;
+
     // The player's current movement vector
     Vector3 moveVec = Vector3.zero;
 
@@ -34,22 +43,69 @@ public class PlayerController : MonoBehaviour
         moveVec = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * moveSpeed;
 
         // If player should start & stop instantly, velocity is 1:1 w/ player's input
-        if(snappyMovement)
+        if (snappyMovement)
             rb.velocity = moveVec;
+    }
 
-        // If we want the player to decelerate while not holding in a direction
-        else
+    private void FixedUpdate()
+    {
+        if(!snappyMovement)
         {
             // Current implementation makes physics system do all the work via friction- requires changing player mass/ adding a physics material to plqayer to tweak how slippery player is 
             if (moveVec.x != 0)
-                rb.velocity = new Vector3(moveVec.x, 0, rb.velocity.z);
-            if (moveVec.z != 0)
-                rb.velocity = new Vector3(rb.velocity.x, 0, moveVec.z);
+            {
+                if (rb.velocity.x != 0)
+                {
+                    if (GetScalar(rb.velocity.x) == GetScalar(moveVec.x))
+                    {
+                        if (Mathf.Abs(rb.velocity.x) < moveSpeed)
+                            rb.velocity = new Vector3(rb.velocity.x + (accelSpeed * GetScalar(rb.velocity.x)), 0, rb.velocity.z);
+                        else
+                            rb.velocity = new Vector3(moveSpeed * GetScalar(rb.velocity.x), 0, rb.velocity.z);
+                    }
+                    else
+                        rb.velocity = new Vector3(rb.velocity.x + (turnAroundSpeed * GetScalar(moveVec.x)), 0, rb.velocity.z);
+                }
+                else
+                    rb.velocity = new Vector3(rb.velocity.x + (accelSpeed * GetScalar(moveVec.x)), 0, rb.velocity.z);
+            }
+            else
+            {
+                if(Mathf.Abs(rb.velocity.x) < 1)
+                    rb.velocity = new Vector3(0, 0, rb.velocity.z);
+                else
+                    rb.velocity = new Vector3(rb.velocity.x - (decelSpeed * GetScalar(rb.velocity.x)), 0, rb.velocity.z);
+            }
 
-            // TODO: IF we want to flesh this out more, we can apply an opposite force to whatever direction has no current input. We can also apply even more of this force if the player
-            // suddenly changes direction. The idea here is if the player just releases the controls, they decelerate slowish. However, if they were going forward & start holding back, they should
-            // decelerate quickly (~2x speed they would decelerate w/o holding any direction), and once velocity is 0 they should start moving in the opposite direction
-            // We should also add in an acceleration factor just to make it more smooth so they don't reach max speed instantly (since they're not slowing down instantly)
+            if (moveVec.z != 0)
+            {
+                if (rb.velocity.z != 0)
+                {
+                    if (GetScalar(rb.velocity.z) == GetScalar(moveVec.z))
+                    {
+                        if (Mathf.Abs(rb.velocity.z) < moveSpeed)
+                            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + (accelSpeed * GetScalar(rb.velocity.z)));
+                        else
+                            rb.velocity = new Vector3(rb.velocity.x, 0, moveSpeed * GetScalar(rb.velocity.z));
+                    }
+                    else
+                        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + (turnAroundSpeed* GetScalar(moveVec.z)));
+                }
+                else
+                    rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + (accelSpeed * GetScalar(moveVec.z)));
+            }
+            else
+            {
+                if (Mathf.Abs(rb.velocity.z) < 1)
+                    rb.velocity = new Vector3(rb.velocity.x, 0, 0);
+                else
+                    rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z - (decelSpeed * GetScalar(rb.velocity.z)));
+            }
         }
+    }
+
+    private float GetScalar(float x)
+    {
+        return Mathf.Abs(x) / x;
     }
 }

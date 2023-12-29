@@ -469,6 +469,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   snappyMovement: 0
+  accelSpeed: 0.5
+  decelSpeed: 0.1
+  turnAroundSpeed: 0.5
 --- !u!1 &1727149486
 GameObject:
   m_ObjectHideFlags: 0
