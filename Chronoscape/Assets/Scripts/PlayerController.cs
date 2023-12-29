@@ -49,61 +49,50 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!snappyMovement)
-        {
-            // Current implementation makes physics system do all the work via friction- requires changing player mass/ adding a physics material to plqayer to tweak how slippery player is 
-            if (moveVec.x != 0)
-            {
-                if (rb.velocity.x != 0)
-                {
-                    if (GetScalar(rb.velocity.x) == GetScalar(moveVec.x))
-                    {
-                        if (Mathf.Abs(rb.velocity.x) < moveSpeed)
-                            rb.velocity = new Vector3(rb.velocity.x + (accelSpeed * GetScalar(rb.velocity.x)), 0, rb.velocity.z);
-                        else
-                            rb.velocity = new Vector3(moveSpeed * GetScalar(rb.velocity.x), 0, rb.velocity.z);
-                    }
-                    else
-                        rb.velocity = new Vector3(rb.velocity.x + (turnAroundSpeed * GetScalar(moveVec.x)), 0, rb.velocity.z);
-                }
-                else
-                    rb.velocity = new Vector3(rb.velocity.x + (accelSpeed * GetScalar(moveVec.x)), 0, rb.velocity.z);
-            }
-            else
-            {
-                if(Mathf.Abs(rb.velocity.x) < 1)
-                    rb.velocity = new Vector3(0, 0, rb.velocity.z);
-                else
-                    rb.velocity = new Vector3(rb.velocity.x - (decelSpeed * GetScalar(rb.velocity.x)), 0, rb.velocity.z);
-            }
-
-            if (moveVec.z != 0)
-            {
-                if (rb.velocity.z != 0)
-                {
-                    if (GetScalar(rb.velocity.z) == GetScalar(moveVec.z))
-                    {
-                        if (Mathf.Abs(rb.velocity.z) < moveSpeed)
-                            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + (accelSpeed * GetScalar(rb.velocity.z)));
-                        else
-                            rb.velocity = new Vector3(rb.velocity.x, 0, moveSpeed * GetScalar(rb.velocity.z));
-                    }
-                    else
-                        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + (turnAroundSpeed* GetScalar(moveVec.z)));
-                }
-                else
-                    rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z + (accelSpeed * GetScalar(moveVec.z)));
-            }
-            else
-            {
-                if (Mathf.Abs(rb.velocity.z) < 1)
-                    rb.velocity = new Vector3(rb.velocity.x, 0, 0);
-                else
-                    rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z - (decelSpeed * GetScalar(rb.velocity.z)));
-            }
-        }
+        // Move the player
+        if (!snappyMovement)
+            rb.velocity = new Vector3(UpdateAxisVelocity(rb.velocity.x, moveVec.x), 0, UpdateAxisVelocity(rb.velocity.z, moveVec.z));
     }
 
+    /// <summary>
+    /// Updates player velocity on a per-axis bases
+    /// </summary>
+    /// <param name="playerVelocity">The player's current velocity in a direction (x or z)</param>
+    /// <param name="moveInput">The player's current input direction (x or z)</param>
+    /// <returns>The velocity component (x or z)</returns>
+    private float UpdateAxisVelocity(float playerVelocity, float moveInput) // Original movement code by me; simplified into method via ChatGPT
+    {
+        // If there is input from the player
+        if (moveInput != 0)
+        {
+            // If the player character is in motion
+            if (playerVelocity != 0)
+            {
+                // If we are trying to move in the direction of movement
+                if (GetScalar(playerVelocity) == GetScalar(moveInput))
+                    // If we are not at max speed, accelerate. Otherwise, cap player at max speed.
+                    playerVelocity = Mathf.Abs(playerVelocity) < moveSpeed ? playerVelocity + (accelSpeed * GetScalar(playerVelocity)) : moveSpeed * GetScalar(playerVelocity);
+                else
+                    // If we are trying to move in the direction opposite of movement, quickly decelerate
+                    playerVelocity += turnAroundSpeed * GetScalar(moveInput);
+            }
+            // If the player is NOT moving, get them moving a bit (avoids divide by 0 error)
+            else
+                playerVelocity += accelSpeed * GetScalar(moveInput);
+        }
+        // If there is no input from player, slowly decelerate until we're basically not moving & set velocity in that axis to 0
+        else
+            playerVelocity = Mathf.Abs(playerVelocity) < 1 ? 0 : playerVelocity - (decelSpeed * GetScalar(playerVelocity));
+
+        // Returns the new velocity component
+        return playerVelocity;
+    }
+
+    /// <summary>
+    /// Get the scaler value of a float
+    /// </summary>
+    /// <param name="x">The float to get the scalar of</param>
+    /// <returns>The scalar value of x</returns>
     private float GetScalar(float x)
     {
         return Mathf.Abs(x) / x;
