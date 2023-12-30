@@ -8,19 +8,22 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField, Tooltip("How fast the player should move at max speed")]
-    private float moveSpeed = 5;
+    private float moveSpeed = 5f;
+
+    [SerializeField, Tooltip("How fast the player should rotate")]
+    private float rotateSpeed = 30f;
 
     [SerializeField, Tooltip("Whether player velocity changes should be instant or have some acceleration/ deceleration")]
     private bool snappyMovement = false;
 
     [SerializeField]
-    private float accelSpeed = 1;
+    private float accelSpeed = 1f;
 
     [SerializeField]
-    private float decelSpeed = 1;
+    private float decelSpeed = 1f;
 
     [SerializeField]
-    private float turnAroundSpeed = 1;
+    private float turnAroundSpeed = 1f;
 
     // The player's current movement vector
     Vector3 moveVec = Vector3.zero;
@@ -45,6 +48,12 @@ public class PlayerController : MonoBehaviour
         // If player should start & stop instantly, velocity is 1:1 w/ player's input
         if (snappyMovement)
             rb.velocity = moveVec;
+
+        // Rotate player with moveVec
+        if (moveVec != Vector3.zero)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveVec), Time.deltaTime * rotateSpeed);
+        }
     }
 
     private void FixedUpdate()
