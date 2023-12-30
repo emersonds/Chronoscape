@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  rotateSpeed: 30
+  rotateSpeed: 800
   snappyMovement: 0
   accelSpeed: 0.5
   decelSpeed: 0.1

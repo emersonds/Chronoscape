@@ -31,16 +31,12 @@ public class PlayerController : MonoBehaviour
     // The player's Rigidbody component
     Rigidbody rb = null;
 
-    private float cameraRot = 0f;
-
 
     // Start is called before the first frame update
     void Start()
     {
         // Get Rigidbody component
         rb = GetComponent<Rigidbody>();
-
-        cameraRot = Camera.main.transform.localRotation.y;
     }
 
     // Update is called once per frame
@@ -49,14 +45,6 @@ public class PlayerController : MonoBehaviour
         // Sets a Vector3 using the current value of Horizontal & Vertical inputs (defined in old input manager) & multiplies it by scalar moveSpeed
         moveVec = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * moveSpeed;
 
-        // Create a matrix to skew input vector by rotating vector
-        // Credit for this idea goes to Tarodev and his isometric controller:
-        // https://www.youtube.com/watch?v=8ZxVBCvJDWk
-        //var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, cameraRot, 0));
-        
-        //// Skew input
-        //moveVec = matrix.MultiplyPoint3x4(moveVec);
-
         // If player should start & stop instantly, velocity is 1:1 w/ player's input
         if (snappyMovement)
             rb.velocity = moveVec;
@@ -64,7 +52,7 @@ public class PlayerController : MonoBehaviour
         if (moveVec != Vector3.zero)
         {
             Quaternion toRot = Quaternion.LookRotation(rb.velocity);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, 300f * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, rotateSpeed * Time.deltaTime);
         }
     }
 
@@ -72,14 +60,7 @@ public class PlayerController : MonoBehaviour
     {
         // Move the player
         if (!snappyMovement)
-        {
             rb.velocity = new Vector3(UpdateAxisVelocity(rb.velocity.x, moveVec.x), 0, UpdateAxisVelocity(rb.velocity.z, moveVec.z));
-
-            var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, cameraRot, 0));
-
-            // Skew input
-            rb.velocity = matrix.MultiplyPoint3x4(rb.velocity);
-        }
     }
 
     /// <summary>
