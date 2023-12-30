@@ -45,6 +45,14 @@ public class PlayerController : MonoBehaviour
         // Sets a Vector3 using the current value of Horizontal & Vertical inputs (defined in old input manager) & multiplies it by scalar moveSpeed
         moveVec = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * moveSpeed;
 
+        // Create a matrix to skew input vector by rotating vector
+        // Credit for this idea goes to Tarodev and his isometric controller:
+        // https://www.youtube.com/watch?v=8ZxVBCvJDWk
+        var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+        
+        // Skew input
+        moveVec = matrix.MultiplyPoint3x4(moveVec);
+
         // If player should start & stop instantly, velocity is 1:1 w/ player's input
         if (snappyMovement)
             rb.velocity = moveVec;
