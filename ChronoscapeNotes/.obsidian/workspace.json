@@ -146,12 +146,14 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "804667deba2b320a",
+  "active": "a45255f368b9b788",
   "lastOpenFiles": [
-    "Design/Ability Breakdown.canvas",
-    "Design/Classes.md",
-    "Design/Untitled.md",
+    "Untitled.canvas",
+    "2023-12-27.md",
     "Design/General Gameplay.md",
+    "Design/Classes.md",
+    "Design/Ability Breakdown.canvas",
+    "Design/Untitled.md",
     "Design"
   ]
 }
