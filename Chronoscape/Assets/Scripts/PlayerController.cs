@@ -31,12 +31,16 @@ public class PlayerController : MonoBehaviour
     // The player's Rigidbody component
     Rigidbody rb = null;
 
+    private float cameraRot = 0f;
+
 
     // Start is called before the first frame update
     void Start()
     {
         // Get Rigidbody component
         rb = GetComponent<Rigidbody>();
+
+        cameraRot = Camera.main.transform.localRotation.y;
     }
 
     // Update is called once per frame
@@ -48,19 +52,19 @@ public class PlayerController : MonoBehaviour
         // Create a matrix to skew input vector by rotating vector
         // Credit for this idea goes to Tarodev and his isometric controller:
         // https://www.youtube.com/watch?v=8ZxVBCvJDWk
-        var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+        //var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, cameraRot, 0));
         
-        // Skew input
-        moveVec = matrix.MultiplyPoint3x4(moveVec);
+        //// Skew input
+        //moveVec = matrix.MultiplyPoint3x4(moveVec);
 
         // If player should start & stop instantly, velocity is 1:1 w/ player's input
         if (snappyMovement)
             rb.velocity = moveVec;
 
-        // Rotate player with moveVec
         if (moveVec != Vector3.zero)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveVec), Time.deltaTime * rotateSpeed);
+            Quaternion toRot = Quaternion.LookRotation(rb.velocity);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, 300f * Time.deltaTime);
         }
     }
 
@@ -68,7 +72,14 @@ public class PlayerController : MonoBehaviour
     {
         // Move the player
         if (!snappyMovement)
+        {
             rb.velocity = new Vector3(UpdateAxisVelocity(rb.velocity.x, moveVec.x), 0, UpdateAxisVelocity(rb.velocity.z, moveVec.z));
+
+            var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, cameraRot, 0));
+
+            // Skew input
+            rb.velocity = matrix.MultiplyPoint3x4(rb.velocity);
+        }
     }
 
     /// <summary>
