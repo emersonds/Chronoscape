@@ -13,9 +13,6 @@ public abstract class PlayerController : MonoBehaviour
     [field: SerializeField, Tooltip("How fast the player should rotate")]
     protected virtual float RotateSpeed { get; private set; }
 
-    [field: SerializeField, Tooltip("Whether player velocity changes should be instant or have some acceleration/ deceleration")]
-    protected virtual bool SnappyMovement { get; private set; }
-
     [field: SerializeField, Tooltip("How fast the player accelerates.")]
     protected virtual float AccelSpeed { get; private set; }
 
@@ -31,36 +28,59 @@ public abstract class PlayerController : MonoBehaviour
     // The player's Rigidbody component
     private Rigidbody rb;
 
+    // Player's animator controller
+    private Animator animator;
+
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        // Get Rigidbody component
+        // Get components
         rb = GetComponentInParent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
+
 
     // Update is called once per frame
     protected virtual void Update()
     {
+        GetInput();
+    }
+
+
+    protected virtual void FixedUpdate()
+    {
+        Move();
+    }
+
+
+    /// <summary>
+    /// Takes player input to move and perform actions
+    /// </summary>
+    private void GetInput()
+    {
         // Sets a Vector3 using the current value of Horizontal & Vertical inputs (defined in old input manager) & multiplies it by scalar moveSpeed
         moveVec = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * MoveSpeed;
+    }
 
-        // If player should start & stop instantly, velocity is 1:1 w/ player's input
-        if (SnappyMovement)
-            rb.velocity = moveVec;
+    /// <summary>
+    /// Moves the player using 
+    /// </summary>
+    private void Move()
+    {
+        // Move the player
+        rb.velocity = new Vector3(UpdateAxisVelocity(rb.velocity.x, moveVec.x), 0, UpdateAxisVelocity(rb.velocity.z, moveVec.z));
 
+        // Rotate player to face movement direction
         if (moveVec != Vector3.zero)
         {
             Quaternion toRot = Quaternion.LookRotation(rb.velocity);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, RotateSpeed * Time.deltaTime);
         }
-    }
 
-    private void FixedUpdate()
-    {
-        // Move the player
-        if (!SnappyMovement)
-            rb.velocity = new Vector3(UpdateAxisVelocity(rb.velocity.x, moveVec.x), 0, UpdateAxisVelocity(rb.velocity.z, moveVec.z));
+        // Set animations based on player speed
+        animator.SetFloat("speed", rb.velocity.magnitude);
+
     }
 
     /// <summary>

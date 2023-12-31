@@ -18,4 +18,9 @@ public class Character_Knight : PlayerController
     {
         base.Update();
     }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
 }
