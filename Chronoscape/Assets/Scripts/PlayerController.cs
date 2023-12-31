@@ -23,13 +23,13 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual float TurnAroundSpeed { get; private set; }
 
     // The player's current movement vector
-    Vector3 moveVec = Vector3.zero;
+    protected Vector3 moveVec = Vector3.zero;
 
     // The player's Rigidbody component
-    private Rigidbody rb;
+    protected Rigidbody rb;
 
     // Player's animator controller
-    private Animator animator;
+    protected Animator animator;
 
     // Abstract methods each character may implement
     protected abstract void ActivateBasicAbility();
@@ -65,6 +65,12 @@ public abstract class PlayerController : MonoBehaviour
     {
         // Sets a Vector3 using the current value of Horizontal & Vertical inputs (defined in old input manager) & multiplies it by scalar moveSpeed
         moveVec = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * MoveSpeed;
+
+        // Activates abilities per player input
+        if (Input.GetButtonDown("BasicAbility"))
+            ActivateBasicAbility();
+        if (Input.GetButtonDown("UltimateAbility"))
+            ActivateUltimateAbility();
     }
 
     /// <summary>
@@ -93,7 +99,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <param name="playerVelocity">The player's current velocity in a direction (x or z)</param>
     /// <param name="moveInput">The player's current input direction (x or z)</param>
     /// <returns>The velocity component (x or z)</returns>
-    private float UpdateAxisVelocity(float playerVelocity, float moveInput) // Original movement code by me; simplified into method via ChatGPT
+    protected virtual float UpdateAxisVelocity(float playerVelocity, float moveInput) // Original movement code by me; simplified into method via ChatGPT
     {
         // If there is input from the player
         if (moveInput != 0)
@@ -126,7 +132,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="x">The float to get the scalar of</param>
     /// <returns>The scalar value of x</returns>
-    private float GetScalar(float x)
+    protected float GetScalar(float x)
     {
         return Mathf.Abs(x) / x;
     }
