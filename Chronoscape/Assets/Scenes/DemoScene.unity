@@ -703,30 +703,6 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
---- !u!1 &1892624854 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1927495307706587821, guid: a2e49ecb8ec5cad4da7387338bd11782,
-    type: 3}
-  m_PrefabInstance: {fileID: 8528236820888484571}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1892624858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1892624854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26034478edc312c40bd64864730a5314, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  rotateSpeed: 30
-  snappyMovement: 0
-  accelSpeed: 1
-  decelSpeed: 1
-  turnAroundSpeed: 1
 --- !u!1001 &5656646272768718601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -803,6 +779,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1210259649365601491, guid: a2e49ecb8ec5cad4da7387338bd11782,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1927495307706587815, guid: a2e49ecb8ec5cad4da7387338bd11782,
         type: 3}
       propertyPath: m_RootOrder
