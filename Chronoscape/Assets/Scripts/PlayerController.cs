@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         // Get Rigidbody component
         rb = GetComponent<Rigidbody>();
