@@ -23,4 +23,24 @@ public class Character_Knight : PlayerController
     {
         base.FixedUpdate();
     }
+
+    protected override void GetInput()
+    {
+        if (Input.GetButtonDown("BasicAbility"))
+            ActivateBasicAbility();
+        if (Input.GetButtonDown("UltimateAbility"))
+            ActivateUltimateAbility();
+
+        base.GetInput();
+    }
+
+    protected override void ActivateBasicAbility()
+    {
+        Debug.Log("Basic ability cast!");
+    }
+
+    protected override void ActivateUltimateAbility()
+    {
+        Debug.Log("Ultimate ability cast!");
+    }
 }

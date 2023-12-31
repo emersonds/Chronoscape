@@ -31,6 +31,10 @@ public abstract class PlayerController : MonoBehaviour
     // Player's animator controller
     private Animator animator;
 
+    // Abstract methods each character may implement
+    protected abstract void ActivateBasicAbility();
+    protected abstract void ActivateUltimateAbility();
+
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -57,7 +61,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// Takes player input to move and perform actions
     /// </summary>
-    private void GetInput()
+    protected virtual void GetInput()
     {
         // Sets a Vector3 using the current value of Horizontal & Vertical inputs (defined in old input manager) & multiplies it by scalar moveSpeed
         moveVec = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * MoveSpeed;

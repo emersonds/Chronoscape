@@ -1,0 +1,1 @@
+- Have the option to change ability keybindings per character, [similar to Overwatch](https://www.youtube.com/watch?v=smOCBXUqD0w).
