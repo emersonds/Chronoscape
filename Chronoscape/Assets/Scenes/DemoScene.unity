@@ -1061,6 +1061,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 4620769330996901909, guid: 15b3fdf2606a3264da79ef15663b6190,
+        type: 3}
+      propertyPath: dashForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620769330996901909, guid: 15b3fdf2606a3264da79ef15663b6190,
+        type: 3}
+      propertyPath: dashCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620769330996901909, guid: 15b3fdf2606a3264da79ef15663b6190,
+        type: 3}
+      propertyPath: movingDashForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620769330996901909, guid: 15b3fdf2606a3264da79ef15663b6190,
+        type: 3}
+      propertyPath: standingDashForce
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b3fdf2606a3264da79ef15663b6190, type: 3}
 --- !u!1001 &8528236820888484571

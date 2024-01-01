@@ -7,8 +7,11 @@ public class Character_Knight : PlayerController
     // May be helpful to reference this documentation while designing the characters:
     // https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/polymorphism
 
-    [SerializeField, Tooltip("How much force is applied to the player to dash.")]
-    private float dashForce = 100f;
+    [SerializeField, Tooltip("How much force is applied to the player to dash when moving.")]
+    private float movingDashForce = 100f;
+
+    [SerializeField, Tooltip("How much force is applied to the player to dash when not moving.")]
+    private float standingDashForce = 100f;
 
     [SerializeField, Tooltip("How long the player can dash for.")]
     private float dashDuration = 1f;
@@ -68,7 +71,7 @@ public class Character_Knight : PlayerController
                 playerVelocity += AccelSpeed * GetScalar(moveInput);
         }
         // If there is no input from player, slowly decelerate until we're basically not moving & set velocity in that axis to 0
-        else
+        else if (moveInput == 0 && !isDashing)
             playerVelocity = Mathf.Abs(playerVelocity) < 1 ? 0 : playerVelocity - (DecelSpeed * GetScalar(playerVelocity));
 
         // Returns the new velocity component
@@ -79,24 +82,34 @@ public class Character_Knight : PlayerController
     {
         if (canDash)
         {
-            animator.SetBool("isDashing", true);
-            StartCoroutine(DashTimer());
+            Vector3 currMoveVec = moveVec;
+            StartCoroutine(DashTimer(currMoveVec));
         }
     }
 
 
-    private IEnumerator DashTimer()
+    private IEnumerator DashTimer(Vector3 dir)
     {
         canDash = false;
         isDashing = true;
         Vector3 tempVelocity = rb.velocity;
-        rb.velocity *= dashForce;
 
-        yield return new WaitForSeconds(dashDuration);
+        if (dir != Vector3.zero)
+        {
+            animator.SetBool("isDashing", true);
+            rb.velocity *= movingDashForce;
+            yield return new WaitForSeconds(dashDuration);
+        }
+        else
+        {
+            animator.SetBool("isDashing", true);
+            rb.AddForce(transform.forward * standingDashForce, ForceMode.Impulse);
+            yield return new WaitForSeconds(dashDuration);
+        }
 
+        rb.velocity = tempVelocity;
         animator.SetBool("isDashing", false);
         isDashing = false;
-        rb.velocity = tempVelocity;
         StartCoroutine(DashCooldown());
     }
 
