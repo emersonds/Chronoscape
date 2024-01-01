@@ -1104,9 +1104,10 @@ MonoBehaviour:
   <AccelSpeed>k__BackingField: 1
   <DecelSpeed>k__BackingField: 1
   <TurnAroundSpeed>k__BackingField: 1
-  dashForce: 1.3
+  movingDashForce: 2
+  standingDashForce: 15
   dashDuration: 0.25
-  dashCooldown: 3
+  dashCooldown: 1
 --- !u!1 &666452997405279485
 GameObject:
   m_ObjectHideFlags: 0
