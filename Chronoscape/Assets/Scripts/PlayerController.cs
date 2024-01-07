@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 /// <summary>
@@ -22,6 +23,18 @@ public abstract class PlayerController : MonoBehaviour
     [field: SerializeField, Tooltip("How fast the player turns around when putting in an opposite input.")]
     protected virtual float TurnAroundSpeed { get; private set; }
 
+    [field: SerializeField, Tooltip("How fast the player attacks. This is a modifier for the attack animation.")]
+    protected virtual float AttackSpeed { get; private set; }
+
+    [field: SerializeField, Tooltip("How long until the player can attack again.")]
+    protected virtual float AttackCooldown { get; private set; }
+
+    // If the player can attack
+    protected bool canAttack = true;
+
+    // If the player is currently attacking (used for animation cancelling)
+    protected bool isAttacking = false;
+
     // The player's current movement vector
     protected Vector3 moveVec = Vector3.zero;
 
@@ -30,6 +43,9 @@ public abstract class PlayerController : MonoBehaviour
 
     // Player's animator controller
     protected Animator animator;
+
+    // Player's upper body layer within the animator
+    protected int upperBodyLayer;
 
     // Abstract methods each character may implement
     protected abstract void ActivateBasicAbility();
@@ -42,6 +58,10 @@ public abstract class PlayerController : MonoBehaviour
         // Get components
         rb = GetComponentInParent<Rigidbody>();
         animator = GetComponent<Animator>();
+
+        // Set attack animation defaults
+        upperBodyLayer = animator.GetLayerIndex("UpperBody");
+        animator.SetLayerWeight(upperBodyLayer, 0f);
     }
 
 
@@ -49,6 +69,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void Update()
     {
         GetInput();
+        Attack();
     }
 
 
@@ -94,6 +115,36 @@ public abstract class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Starts an auto attack. Base class only controls animations.
+    /// </summary>
+    protected virtual void Attack()
+    {
+        if (canAttack)
+        {
+            Debug.Log("Attacking");
+            canAttack = false;
+            isAttacking = true;
+            animator.SetLayerWeight(upperBodyLayer, 1f);
+            animator.Play("Attack", upperBodyLayer);
+        }
+
+        if (!animator.GetCurrentAnimatorStateInfo(upperBodyLayer).IsName("Attack") && isAttacking)
+        {
+            EndAttack();
+        }
+    }
+
+
+    public virtual void EndAttack()
+    {
+        Debug.Log("End Attack Called");
+        isAttacking = false;
+        animator.SetBool("isAttacking", false);
+        animator.SetLayerWeight(upperBodyLayer, 0f);
+        StartCoroutine(AttackCooldownTimer());
+    }
+
+    /// <summary>
     /// Updates player velocity on a per-axis bases
     /// </summary>
     /// <param name="playerVelocity">The player's current velocity in a direction (x or z)</param>
@@ -135,5 +186,16 @@ public abstract class PlayerController : MonoBehaviour
     protected float GetScalar(float x)
     {
         return Mathf.Abs(x) / x;
+    }
+    
+
+    /// <summary>
+    /// Waits for AttackCooldown seconds to allow the player to attack again
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator AttackCooldownTimer()
+    {
+        yield return new WaitForSeconds(AttackCooldown);
+        canAttack = true;
     }
 }
