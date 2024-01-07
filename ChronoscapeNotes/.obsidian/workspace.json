@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "cb1e7311312bd02a",
+        "id": "0d20f7ee65bc224b",
         "type": "tabs",
         "children": [
           {
-            "id": "804667deba2b320a",
+            "id": "de0bfdf512af672b",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "9471d0af4e7a5860",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Story.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Design/Classes.md",
+                "file": "Story.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Design/Classes.md",
+                "file": "Story.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Design/Classes.md"
+                "file": "Story.md"
               }
             }
           }
@@ -146,12 +159,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "a45255f368b9b788",
+  "active": "9471d0af4e7a5860",
   "lastOpenFiles": [
+    "Design/Classes.md",
+    "Story.md",
+    "Design/General Gameplay.md",
+    "Misc. Brainstorming.md",
+    "Helpful Links.md",
     "Untitled.canvas",
     "2023-12-27.md",
-    "Design/General Gameplay.md",
-    "Design/Classes.md",
     "Design/Ability Breakdown.canvas",
     "Design/Untitled.md",
     "Design"

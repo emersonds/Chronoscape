@@ -1,0 +1,7 @@
+Some organization created a machine to travel through time/ dimensions. During the testing phase, the machine suffers critical failure & explodes, opening tears in multiple timelines & dimensions, and causes people & creatures to be pulled into them. 
+
+Our first 3 characters will be unsuspecting victims of this, and their goal is to survive & make it back to their time/ dimension. Some unlockable characters will have the same goal (maybe?? Not really sure if this works if they're a character w/ their own stage).
+
+All other characters will belong to one of 2 groups- either the organization that built the machine, or an organization that opposes them. Their goal is to make it to the timeline/ dimension where machine resides in order to reclaim/ claim it for their group. 
+
+Within the game world there will be lore notes from the research team/ operatives of the opposing group that shed *some* light onto what was happening behind the scenes, but not enough for the player to draw any conclusions (this could be explored more in-depth w/ dlc or another game if we actually want to explore the reasons for these 2 groups & the machine). These lore notes will be readable by ALL characters, but there will be some that are encrypted/ written in code that only members of that group can read. This will just a glimpse into the day-to-day of the organizations.
