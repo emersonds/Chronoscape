@@ -90,6 +90,13 @@ public class Character_Knight : PlayerController
     }
 
 
+
+    protected override void Attack()
+    {
+        Debug.Log("Knight has attacked!");
+    }
+
+
     /// <summary>
     /// Activates the Knight's dash roll.
     /// </summary>

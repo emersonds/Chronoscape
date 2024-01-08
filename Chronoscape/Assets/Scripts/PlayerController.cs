@@ -44,12 +44,10 @@ public abstract class PlayerController : MonoBehaviour
     // Player's animator controller
     protected Animator animator;
 
-    // Player's upper body layer within the animator
-    protected int upperBodyLayer;
-
     // Abstract methods each character may implement
     protected abstract void ActivateBasicAbility();
     protected abstract void ActivateUltimateAbility();
+    protected abstract void Attack();
 
 
     // Start is called before the first frame update
@@ -59,9 +57,8 @@ public abstract class PlayerController : MonoBehaviour
         rb = GetComponentInParent<Rigidbody>();
         animator = GetComponent<Animator>();
 
-        // Set attack animation defaults
-        upperBodyLayer = animator.GetLayerIndex("UpperBody");
-        animator.SetLayerWeight(upperBodyLayer, 0f);
+        // Start auto attacking
+        StartCoroutine(AttackCoroutine());
     }
 
 
@@ -69,7 +66,6 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void Update()
     {
         GetInput();
-        Attack();
     }
 
 
@@ -97,7 +93,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// Moves the player using 
     /// </summary>
-    private void Move()
+    protected void Move()
     {
         // Move the player
         rb.velocity = new Vector3(UpdateAxisVelocity(rb.velocity.x, moveVec.x), 0, UpdateAxisVelocity(rb.velocity.z, moveVec.z));
@@ -112,36 +108,6 @@ public abstract class PlayerController : MonoBehaviour
         // Set animations based on player speed
         animator.SetFloat("speed", rb.velocity.magnitude);
 
-    }
-
-    /// <summary>
-    /// Starts an auto attack. Base class only controls animations.
-    /// </summary>
-    protected virtual void Attack()
-    {
-        if (canAttack)
-        {
-            Debug.Log("Attacking");
-            canAttack = false;
-            isAttacking = true;
-            animator.SetLayerWeight(upperBodyLayer, 1f);
-            animator.Play("Attack", upperBodyLayer);
-        }
-
-        if (!animator.GetCurrentAnimatorStateInfo(upperBodyLayer).IsName("Attack") && isAttacking)
-        {
-            EndAttack();
-        }
-    }
-
-
-    public virtual void EndAttack()
-    {
-        Debug.Log("End Attack Called");
-        isAttacking = false;
-        animator.SetBool("isAttacking", false);
-        animator.SetLayerWeight(upperBodyLayer, 0f);
-        StartCoroutine(AttackCooldownTimer());
     }
 
     /// <summary>
@@ -190,12 +156,24 @@ public abstract class PlayerController : MonoBehaviour
     
 
     /// <summary>
-    /// Waits for AttackCooldown seconds to allow the player to attack again
+    /// Handles auto attacks by attacking in set intervals.
     /// </summary>
     /// <returns></returns>
-    protected virtual IEnumerator AttackCooldownTimer()
+    protected virtual IEnumerator AttackCoroutine()
     {
-        yield return new WaitForSeconds(AttackCooldown);
-        canAttack = true;
+        // Infinite attack loop
+        for (;;)
+        {
+            // Set attack speed
+            animator.SetFloat("attackSpeed", AttackSpeed);
+
+            // Play animation
+            animator.Play("Attack", 1);
+
+            // Activate auto attack
+            Attack();
+            
+            yield return new WaitForSeconds(AttackCooldown);
+        }
     }
 }
