@@ -1063,6 +1063,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4620769330996901909, guid: 15b3fdf2606a3264da79ef15663b6190,
         type: 3}
+      propertyPath: <MaxHealth>k__BackingField
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4620769330996901909, guid: 15b3fdf2606a3264da79ef15663b6190,
+        type: 3}
       propertyPath: <AttackSpeed>k__BackingField
       value: 1
       objectReference: {fileID: 0}

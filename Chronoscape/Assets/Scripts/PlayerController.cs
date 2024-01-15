@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// A simplistic player mover for the time being; will eventually be the root class ALL playable characters inherit from & modify for ALL player functionality
 /// </summary>
-public abstract class PlayerController : MonoBehaviour
+public abstract class PlayerController : MonoBehaviour, IDamageable
 {
     [field: SerializeField, Tooltip("How fast the player should move at max speed")]
     protected virtual float MoveSpeed { get; private set; }
@@ -35,6 +35,12 @@ public abstract class PlayerController : MonoBehaviour
     // If the player is currently attacking (used for animation cancelling)
     protected bool isAttacking = false;
 
+    [field: SerializeField, Tooltip("The player's max health")]
+    protected virtual float MaxHealth { get; private set; }
+
+    // Player's current health
+    protected float health;
+
     // The player's current movement vector
     protected Vector3 moveVec = Vector3.zero;
 
@@ -59,6 +65,8 @@ public abstract class PlayerController : MonoBehaviour
 
         // Start auto attacking
         StartCoroutine(AttackCoroutine());
+
+        health = MaxHealth;
     }
 
 
@@ -152,6 +160,11 @@ public abstract class PlayerController : MonoBehaviour
     protected float GetScalar(float x)
     {
         return Mathf.Abs(x) / x;
+    }
+
+    public void DoDamage(float damage)
+    {
+        health -= damage;
     }
     
 
