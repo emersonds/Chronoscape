@@ -162,7 +162,7 @@ public abstract class PlayerController : MonoBehaviour, IDamageable
         return Mathf.Abs(x) / x;
     }
 
-    public void DoDamage(float damage)
+    public virtual void DoDamage(float damage)
     {
         health -= damage;
     }

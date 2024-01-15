@@ -19,6 +19,9 @@ public class Character_Knight : PlayerController
     [SerializeField, Tooltip("How long the player has to wait until dash is active after use.")]
     private float dashCooldown = 5f;
 
+    [SerializeField, Tooltip("The arc spawned by the knight's melee attacks that damages enemies it passes through.")]
+    private GameObject meleeArc;
+
     // If the player can dash
     private bool canDash = true;
 
@@ -92,8 +95,19 @@ public class Character_Knight : PlayerController
 
 
     protected override void Attack()
-    {
-        Debug.Log("Knight has attacked!");
+    {   
+        // Set arc rotation
+        // Add 180 to Y rotation to flip projectile to face the correct direction
+        Quaternion arcRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
+
+        // Set arc position
+        Vector3 arcPosition = transform.position;
+
+        // Set arc height so it doesnt spawn in the ground
+        arcPosition.y = 1.15f;
+
+        //
+        GameObject attack = Instantiate(meleeArc, arcPosition, arcRotation);
     }
 
 
