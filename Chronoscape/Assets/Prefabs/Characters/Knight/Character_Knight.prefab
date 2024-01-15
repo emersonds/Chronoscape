@@ -1114,6 +1114,7 @@ MonoBehaviour:
   dashCooldown: 1
   meleeArc: {fileID: 1666568008877989146, guid: 19eb54d3b0dd1634a9fb04709459627a,
     type: 3}
+  arcForce: 15
 --- !u!1 &666452997405279485
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,9 @@ public class Character_Knight : PlayerController
     [SerializeField, Tooltip("The arc spawned by the knight's melee attacks that damages enemies it passes through.")]
     private GameObject meleeArc;
 
+    [SerializeField, Tooltip("How fast the arc travels midair after an attack.")]
+    private float arcForce = 5f;
+
     // If the player can dash
     private bool canDash = true;
 
@@ -106,8 +109,11 @@ public class Character_Knight : PlayerController
         // Set arc height so it doesnt spawn in the ground
         arcPosition.y = 1.15f;
 
-        //
+        // Instantiate attack arc
         GameObject attack = Instantiate(meleeArc, arcPosition, arcRotation);
+
+        // Apply force to the arc to get it moving
+        attack.GetComponent<Rigidbody>().AddForce(transform.forward * arcForce, ForceMode.Impulse);
     }
 
 
